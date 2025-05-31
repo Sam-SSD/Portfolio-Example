@@ -287,6 +287,57 @@ img {
     background-color: #f5f8ff;
 }
 
+/* Estilos para la tabla de proyectos */
+.projects-table-container {
+    margin-bottom: 3rem;
+    overflow-x: auto;
+}
+
+.projects-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.projects-table th,
+.projects-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+}
+
+.projects-table th {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.projects-table tr {
+    border-bottom: 1px solid #e9ecef;
+}
+
+.projects-table tr:last-child {
+    border-bottom: none;
+}
+
+.projects-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.table-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.table-link:hover {
+    color: var(--dark-color);
+}
+
 .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -454,6 +505,12 @@ img {
 
     .portfolio-grid {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+
+    .projects-table th,
+    .projects-table td {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
     }
 }
 

@@ -18,7 +18,7 @@ formulario.addEventListener('submit', function (event) {
 
 
 // Script para desplazamiento suave
-document.querySelectorAll('.nav-links a').forEach(anchor => {
+document.querySelectorAll('.nav-links a, .logo').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
 
