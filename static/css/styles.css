@@ -1,12 +1,49 @@
 :root {
+    /* Colores primarios */
     --primary-color: #4a6cf7;
+    --primary-light: #6b86f9;
+    --primary-dark: #3a55d9;
+
+    /* Colores secundarios */
     --secondary-color: #6c757d;
+    --secondary-light: #868e96;
+    --secondary-dark: #495057;
+
+    /* Colores de fondo y texto */
     --dark-color: #1e293b;
+    --dark-color-alt: #0f172a;
     --light-color: #f8f9fa;
+    --light-color-alt: #e9ecef;
+
+    /* Colores de acento */
     --accent-color: #ff6b6b;
+    --accent-light: #ff8787;
+    --accent-dark: #fa5252;
+    --success-color: #40c057;
+    --warning-color: #fab005;
+
+    /* Gradientes */
     --gradient-1: linear-gradient(135deg, #4a6cf7 0%, #6a11cb 100%);
+    --gradient-2: linear-gradient(135deg, #ff6b6b 0%, #ff8b3d 100%);
+
+    /* Sombras y efectos */
     --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --box-shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.2);
     --transition: all 0.3s ease;
+
+    /* Espaciado */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 3rem;
+    --spacing-xl: 4rem;
+
+    /* Bordes */
+    --border-radius-sm: 5px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 15px;
+    --border-radius-xl: 20px;
+    --border-radius-round: 50px;
 }
 
 * {
@@ -49,19 +86,40 @@ img {
 .btn {
     display: inline-block;
     padding: 12px 30px;
-    background: var(--primary-color);
     color: white;
-    border-radius: 50px;
+    border-radius: var(--border-radius-round);
     font-weight: 500;
     transition: var(--transition);
     border: none;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(74, 108, 247, 0.3);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    /* Efecto de gradiente animado */
+    background-size: 200% 200%;
+    background-image: linear-gradient(45deg, var(--primary-color) 0%, var(--primary-dark) 25%, var(--primary-light) 50%, var(--primary-color) 100%);
+    animation: gradientShift 3s ease infinite;
+}
+
+/* Animación para el gradiente desplazándose */
+@keyframes gradientShift {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
 }
 
 .btn:hover {
     background: var(--dark-color);
-    transform: translateY(-3px);
+    /* Transformación: mover hacia arriba y escalar ligeramente */
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(74, 108, 247, 0.4);
 }
 
 .btn-outline {
@@ -90,6 +148,28 @@ img {
     display: inline-block;
 }
 
+.section-title h2 {
+    font-size: 2.5rem;
+    position: relative;
+    display: inline-block;
+    /* Animación de entrada para los títulos de sección */
+    animation: fadeInUp 1s ease-out;
+}
+
+/* Pseudoelemento ::before para título decorativo */
+.section-title h2::before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: -15px;
+    width: 30px;
+    height: 30px;
+    border-top: 3px solid var(--primary-color);
+    border-left: 3px solid var(--primary-color);
+    opacity: 0.6;
+}
+
+/* Pseudoelemento ::after para línea debajo del título */
 .section-title h2::after {
     content: '';
     position: absolute;
@@ -100,6 +180,30 @@ img {
     height: 4px;
     background: var(--gradient-1);
     border-radius: 2px;
+    /* Animación para la línea bajo el título */
+    animation: widthExpand 1.2s ease-out forwards;
+}
+
+/* Animación de entrada desde abajo */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación de expansión para la línea del título */
+@keyframes widthExpand {
+    from {
+        width: 0;
+    }
+    to {
+        width: 70px;
+    }
 }
 
 /* Header */
@@ -145,6 +249,25 @@ img {
     position: relative;
 }
 
+.nav-links a {
+    color: var(--dark-color);
+    font-weight: 500;
+    position: relative;
+    padding: 5px 0;
+}
+
+/* Pseudoclase :hover para enlaces de navegación */
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+/* Pseudoclase :focus para navegación accesible */
+.nav-links a:focus {
+    outline: 2px dotted var(--primary-color);
+    outline-offset: 3px;
+}
+
+/* Pseudoelemento ::after para efecto de subrayado */
 .nav-links a::after {
     content: '';
     position: absolute;
@@ -158,6 +281,11 @@ img {
 
 .nav-links a:hover::after {
     width: 100%;
+}
+
+/* Pseudoclase :active para efecto de click */
+.nav-links a:active {
+    transform: scale(0.97);
 }
 
 /* Hero Section */
@@ -250,9 +378,41 @@ img {
     align-items: center;
 }
 
+.about-img {
+    position: relative;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
 .about-img img {
-    border-radius: 20px;
+    border-radius: var(--border-radius-xl);
     box-shadow: var(--box-shadow);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.about-img:hover img {
+    transform: rotateY(-10deg);
+    box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Pseudoelemento para efecto de marco decorativo */
+.about-img::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: -20px;
+    width: 100%;
+    height: 100%;
+    border: 4px solid var(--primary-color);
+    border-radius: var(--border-radius-xl);
+    z-index: -1;
+    opacity: 0.3;
+    transition: all 0.5s ease;
+}
+
+.about-img:hover::after {
+    top: 10px;
+    right: -30px;
 }
 
 .about-text h3 {
@@ -295,11 +455,17 @@ img {
 
 .projects-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     background-color: white;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: var(--box-shadow);
+    /* Efecto de profundidad con múltiples sombras */
+    box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.1),
+        0 15px 35px rgba(74, 108, 247, 0.1);
+    /* Añadir un borde fino */
+    border: 1px solid rgba(74, 108, 247, 0.1);
 }
 
 .projects-table th,
@@ -322,8 +488,22 @@ img {
     border-bottom: none;
 }
 
+/* Pseudoclases para filas de tabla en hover */
+.projects-table tbody tr {
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
 .projects-table tbody tr:hover {
     background-color: #f8f9fa;
+    transform: translateX(5px);
+    border-left: 3px solid var(--primary-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Añadir efecto de cebra con pseudoclase :nth-child */
+.projects-table tbody tr:nth-child(even) {
+    background-color: rgba(74, 108, 247, 0.05);
 }
 
 .table-link {
@@ -336,6 +516,14 @@ img {
 
 .table-link:hover {
     color: var(--dark-color);
+    /* Transformación al hacer hover */
+    transform: translateX(5px);
+}
+
+.table-link:hover i {
+    /* Transformación del ícono al hacer hover */
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
 }
 
 .portfolio-grid {
@@ -349,6 +537,44 @@ img {
     overflow: hidden;
     position: relative;
     box-shadow: var(--box-shadow);
+    /* Animación de entrada con retardo progresivo */
+    animation: fadeIn 0.8s ease-out forwards;
+    opacity: 0;
+    /* Habilitar transformaciones 3D */
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: transform 0.5s ease;
+}
+
+/* Efecto de tarjeta levantada en hover */
+.portfolio-item:hover {
+    transform: translateY(-15px) rotateX(5deg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Asignar retardos diferentes a cada proyecto */
+.portfolio-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.portfolio-item:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.portfolio-item:nth-child(3) {
+    animation-delay: 0.5s;
+}
+
+/* Animación de fundido para tarjetas de proyecto */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .portfolio-item img {
@@ -379,7 +605,9 @@ img {
 }
 
 .portfolio-item:hover img {
-    transform: scale(1.1);
+    /* Transformación avanzada en hover */
+    transform: scale(1.1) rotate(2deg);
+    filter: brightness(0.7) blur(2px);
 }
 
 .portfolio-overlay h3 {
@@ -413,6 +641,24 @@ img {
 .portfolio-links a:hover {
     background: var(--primary-color);
     color: white;
+    /* Animación de pulsación al hacer hover */
+    animation: pulse 1s infinite;
+}
+
+/* Animación de pulsación con @keyframes */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(74, 108, 247, 0.7);
+    }
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 10px rgba(74, 108, 247, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(74, 108, 247, 0);
+    }
 }
 
 /* Contact Section */
@@ -429,6 +675,36 @@ img {
 .contact-info h3 {
     font-size: 1.8rem;
     margin-bottom: 2rem;
+    /* Animación de entrada */
+    animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.contact-form {
+    /* Animación de entrada */
+    animation: slideInRight 0.8s ease-out forwards;
+}
+
+/* Animaciones para elementos de contacto */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .contact-item {
@@ -471,14 +747,71 @@ img {
     border: 1px solid #e9ecef;
     border-radius: 10px;
     font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+}
+
+/* Pseudoclases para efectos de input */
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+.form-control:hover {
+    border-color: #c0c8d1;
+}
+
+/* Crear pseudoelemento para los inputs con efecto de brillos */
+.form-group {
+    position: relative;
+    overflow: hidden;
+}
+
+.form-group::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.form-group:hover::after {
+    left: 100%;
 }
 
 /* Footer */
 .footer {
-    background-color: var(--dark-color);
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     color: white;
     padding: 2rem 0;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Pseudoelemento para efecto de brillos */
+.footer::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+    opacity: 0.5;
+    animation: shine 15s linear infinite;
+}
+
+@keyframes shine {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Responsive */
@@ -517,4 +850,33 @@ img {
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px; /* Esto evita que el header fijo oculte el contenido */
+}
+
+/* Estilos para animaciones al hacer scroll */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.animate-on-scroll.animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Añadir variaciones a la animación */
+.animate-on-scroll.fade-left {
+    transform: translateX(-30px);
+}
+
+.animate-on-scroll.fade-left.animated {
+    transform: translateX(0);
+}
+
+.animate-on-scroll.fade-right {
+    transform: translateX(30px);
+}
+
+.animate-on-scroll.fade-right.animated {
+    transform: translateX(0);
 }

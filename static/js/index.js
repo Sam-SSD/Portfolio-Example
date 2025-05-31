@@ -1,6 +1,19 @@
+// Manejar el efecto de scroll para el header
 window.addEventListener('scroll', function () {
     const header = document.querySelector('.header');
     header.classList.toggle('scrolled', window.scrollY > 50);
+
+    // Añadir animación de elementos al hacer scroll
+    const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+    animateElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+
+        if (elementTop < windowHeight - 100) {
+            element.classList.add('animated');
+        }
+    });
 });
 
 const formulario = document.querySelector('.contact-form form');
