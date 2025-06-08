@@ -246,28 +246,34 @@
             </div>
 
             <div class="contact-form animate-on-scroll fade-right">
-                <form>
+                <form id="contactForm" onsubmit="return handleSubmit(event)">
                     <div class="form-group">
-                        <label>
-                            <input type="text" class="form-control" placeholder="Name">
-                        </label>
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Your name" required>
+                        <span class="error-message" id="nameError"></span>
                     </div>
                     <div class="form-group">
-                        <label>
-                            <input type="email" class="form-control" placeholder="Email">
-                        </label>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Your email" required>
+                        <span class="error-message" id="emailError"></span>
                     </div>
                     <div class="form-group">
-                        <label>
-                            <input type="text" class="form-control" placeholder="Subject">
-                        </label>
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-control" placeholder="Message subject" required>
+                        <span class="error-message" id="subjectError"></span>
                     </div>
                     <div class="form-group">
-                        <label>
-                            <textarea class="form-control" rows="5" placeholder="Message"></textarea>
-                        </label>
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" class="form-control" rows="5" placeholder="Your message" required></textarea>
+                        <span class="error-message" id="messageError"></span>
                     </div>
-                    <button type="submit" class="btn">Send Message</button>
+                    <div id="formStatus" class="form-status"></div>
+                    <button type="submit" class="btn">
+                        <span class="button-text">Send Message</span>
+                        <span class="button-loader" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </span>
+                    </button>
                 </form>
             </div>
         </div>
@@ -280,6 +286,12 @@
         <p>&copy; 2025 My Portfolio. All rights reserved.</p>
     </div>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+    (function() {
+        emailjs.init("7JKf9e5hLkbFcgg9V");
+    })();
+</script>
 <script src="static/js/index.js"></script>
 </body>
 </html>

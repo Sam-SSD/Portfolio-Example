@@ -54,18 +54,6 @@ window.addEventListener('scroll', function () {
     });
 });
 
-const formulario = document.querySelector('.contact-form form');
-// Agregamos el evento submit al formulario
-formulario.addEventListener('submit', function (event) {
-    // Prevenimos el comportamiento por defecto del formulario
-    event.preventDefault();
-
-    // Mostramos un mensaje de éxito
-    alert('¡Gracias! Tu mensaje ha sido enviado correctamente.');
-
-    // Limpiamos todos los campos del formulario
-    formulario.reset();
-});
 
 
 // Script para desplazamiento suave
@@ -139,3 +127,153 @@ window.addEventListener('DOMContentLoaded', () => {
         }, i * 200);
     });
 });
+
+// Contact Form Handling
+async function handleSubmit(event) {
+    event.preventDefault();
+    
+    // Get form elements
+    const form = document.getElementById('contactForm');
+    const submitButton = form.querySelector('button[type="submit"]');
+    const buttonText = submitButton.querySelector('.button-text');
+    const buttonLoader = submitButton.querySelector('.button-loader');
+    
+    // Clear previous error messages
+    clearErrors();
+    
+    // Validate form
+    if (!validateForm()) {
+        return false;
+    }
+    
+    try {
+        // Show loading state
+        submitButton.disabled = true;
+        buttonText.style.display = 'none';
+        buttonLoader.style.display = 'inline-block';
+        
+        // Get form data
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Send email using EmailJS
+        await emailjs.send('Portfolio', 'Correo recibido', {
+            from_name: data.name,
+            from_email: data.email,
+            subject: data.subject,
+            message: data.message
+        });
+        
+        // Show success notification
+        showNotification('success', 'Message sent successfully!', 'Thank you for contacting me. I will get back to you soon.');
+        form.reset();
+        
+    } catch (error) {
+        // Show error notification if something goes wrong
+        showNotification('error', 'Error sending message', 'Please try again later.');
+        console.error('Error:', error);
+    } finally {
+        // Reset button state regardless of success or failure
+        submitButton.disabled = false;
+        buttonText.style.display = 'inline-block';
+        buttonLoader.style.display = 'none';
+    }
+    
+    return false;
+}
+
+function validateForm() {
+    let isValid = true;
+    const name = document.getElementById('name');
+    const email = document.getElementById('email');
+    const subject = document.getElementById('subject');
+    const message = document.getElementById('message');
+    
+    // Validate name
+    if (name.value.trim().length < 2) {
+        showError('name', 'Name must be at least 2 characters long');
+        isValid = false;
+    }
+    
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.value.trim())) {
+        showError('email', 'Please enter a valid email address');
+        isValid = false;
+    }
+    
+    // Validate subject
+    if (subject.value.trim().length < 3) {
+        showError('subject', 'Subject must be at least 3 characters long');
+        isValid = false;
+    }
+    
+    // Validate message
+    if (message.value.trim().length < 10) {
+        showError('message', 'Message must be at least 10 characters long');
+        isValid = false;
+    }
+    
+    return isValid;
+}
+
+function showError(fieldId, message) {
+    const errorElement = document.getElementById(`${fieldId}Error`);
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+}
+
+function clearErrors() {
+    const errorElements = document.querySelectorAll('.error-message');
+    errorElements.forEach(element => {
+        element.textContent = '';
+        element.style.display = 'none';
+    });
+}
+
+function showNotification(type, title, message) {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <div class="notification-icon">
+                ${type === 'success' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-circle"></i>'}
+            </div>
+            <div class="notification-text">
+                <h4>${title}</h4>
+                <p>${message}</p>
+            </div>
+            <button class="notification-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Add show class after a small delay for animation
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    // Add click event to close button
+    const closeButton = notification.querySelector('.notification-close');
+    closeButton.addEventListener('click', () => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    });
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }
+    }, 5000);
+}
